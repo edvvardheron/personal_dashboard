@@ -7,7 +7,7 @@ class Observation(Base):
     __tablename__ = 'observations'
     __table_args__ = (
         UniqueConstraint('source', 'metric', 'external_id'),
-                         Index('ix_obs_metric_ts', 'metric', 'timestamp'),
+        Index('ix_obs_metric_ts', 'metric', 'timestamp'),
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -20,5 +20,6 @@ class Observation(Base):
     unit: Mapped[str | None]
     meta: Mapped[dict] = mapped_column(JSON, default=dict)
     external_id: Mapped[str]
-    ingested_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    ingested_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now()
+    )
 

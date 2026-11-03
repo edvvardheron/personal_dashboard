@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from app.core.config import settings
 
@@ -19,7 +19,14 @@ SessionLocal = sessionmaker(bind=engine)
 # DeclarativeBase is a base class for all ORM models,
 # and it provides the necessary metadata and functionality for mapping Python classes to database tables.
 class Base(DeclarativeBase):
-    pass
+    #predictable constraint names, so later migrations can find them
+    metadata = MetaData(naming_convention={
+        "ix": "ix_%(column_0_label)s",
+        "uq": "uq_%(table_name)s_%(column_0_name)s",
+        "ck": "ck_%(table_name)s_%(constraint_name)s",
+        "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+        "pk": "pk_%(table_name)s"
+    })
 
 # get_db is a dependency function that provides a database session to the route handlers.
 def get_db():
