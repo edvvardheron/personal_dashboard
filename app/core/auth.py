@@ -1,9 +1,11 @@
-from fastapi import HTTPException, Security
-from fastapi.security import APIKeyHeader
+import secrets
+
+from fastapi import Depends, HTTPException
+from fastapi.security import HTTPBearer
 from app.core.config import settings
 
-api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+bearer = HTTPBearer(auto_error=False)
 
-def require_api_key(api_key: str = Security(api_key_header)):
-    if api_key is None or api_key != settings.api_key:
-        raise HTTPException(status_code=401, detail="Not authenticated")
+def require_api_key(creds=Depends(bearer)):
+    if creds is None or not secrets.compare_digest(creds.credentials, settings.api_key):
+        raise HTTPException(status_code=403, detail="Invalid or missing API key")
