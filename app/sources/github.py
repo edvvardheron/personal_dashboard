@@ -37,13 +37,13 @@ def fetch_contributions(days: int = 14) -> list[dict]:
         timeout=10
     )
     response.raise_for_status()
+    if 'errors' in response.json():
+        raise Exception(f"GitHub API error: {response.json()['errors']}")
     data = response.json()['data']['user']['contributionsCollection']['contributionCalendar']
     days_out = []
     for week in data['weeks']:
         days_out.extend(week['contributionDays'])
     body = response.json()
-    if 'errors' in body:
-        raise Exception(f"GitHub API error: {body['errors']}")
     return days_out
 
 def sync_github_activity(db: Session) -> None:
