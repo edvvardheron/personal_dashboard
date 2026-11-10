@@ -7,6 +7,7 @@ from app.core.db import get_db, SessionLocal
 from app.models.observation import Observation
 from app.core.config import settings
 from app.core.auth import require_api_key
+from app.sources.mood import router as mood_router
 
 from contextlib import asynccontextmanager
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -52,3 +53,5 @@ def list_observations(source: str | None = None, db: Session = Depends(get_db)):
         query = query.where(Observation.source == source)
     return db.scalars(query).all()
 
+
+app.include_router(mood_router)
