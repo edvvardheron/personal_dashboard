@@ -23,7 +23,7 @@ query($login: String!, $from: DateTime!, $to: DateTime!){
 }
 """
 
-def fetch_contributions(days: int = 14) -> list[dict]:
+def fetch_contributions(days: int = 30) -> list[dict]:
     now = datetime.now(timezone.utc)
     variables = {
         'login': settings.github_username,

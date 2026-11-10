@@ -25,5 +25,23 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana-dashboard
+    ports:
+    - '3000:3000'
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+    - grafana_data:/var/lib/grafana
+    - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+    - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      db:
+        condition: service_healthy
 volumes:
   postgres_data:
+  grafana_data:

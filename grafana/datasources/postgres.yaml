@@ -1,0 +1,16 @@
+apiVersion: 1
+datasources:
+  - name: Postgres
+    uid: fg3s2t803cz5sb
+    type: postgres
+    access: proxy
+    url: db:5432
+    database: ${POSTGRES_DB}
+    user: ${POSTGRES_USER}
+    secureJsonData:
+      password: ${POSTGRES_PASSWORD}
+    jsonData:
+      database: ${POSTGRES_DB}
+      sslmode: disable
+      postgresVersion: 1600
+    isDefault: true

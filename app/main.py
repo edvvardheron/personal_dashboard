@@ -28,7 +28,8 @@ scheduler = BackgroundScheduler()
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     run_github_sync() # Run the sync immediately on startup
-    scheduler.add_job(run_github_sync, 'interval', days=0.5)  # schedule to run every 12 hours
+    scheduler.add_job(run_github_sync, 'interval', hours=12)  # schedule to run every 12 hours
+    scheduler.start()
     yield
     scheduler.shutdown()
 
@@ -51,6 +52,3 @@ def list_observations(source: str | None = None, db: Session = Depends(get_db)):
         query = query.where(Observation.source == source)
     return db.scalars(query).all()
 
-@app.get('/github/contributions')
-def list_github_contributions():
-    return run_github_sync()
