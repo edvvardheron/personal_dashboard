@@ -7,5 +7,8 @@ class Settings(BaseSettings):
     github_username: str
     github_token: str
     wakatime_api_key: str
+    spotify_client_id: str
+    spotify_client_secret: str
+    spotify_refresh_token: str
 
 settings = Settings()

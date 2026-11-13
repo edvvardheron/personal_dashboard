@@ -13,6 +13,7 @@ from contextlib import asynccontextmanager
 from apscheduler.schedulers.background import BackgroundScheduler
 from app.sources.github import sync_github_activity
 from app.sources.wakatime import sync_wakatime_activity
+from app.sources.spotify import sync_spotify_activity
 
 '''
 GET = for retrieving data from the server. It is used to request data from a specified resource.
@@ -29,12 +30,18 @@ def run_wakatime_sync():
     with SessionLocal() as db:
         sync_wakatime_activity(db)
 
+def run_spotify_sync():
+    with SessionLocal() as db:
+        sync_spotify_activity(db)
+
 scheduler = BackgroundScheduler()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     run_github_sync() # Run the sync immediately on startup
     run_wakatime_sync() # Run the sync immediately on startup
+    run_spotify_sync() # Run the sync immediately on startup
+    scheduler.add_job(run_spotify_sync, 'interval', hours=0.5)  # schedule to run every 30 minutes
     scheduler.add_job(run_wakatime_sync, 'interval', hours=0.5)  # schedule to run every 30 minutes
     scheduler.add_job(run_github_sync, 'interval', hours=12)  # schedule to run every 12 hours
     scheduler.start()
