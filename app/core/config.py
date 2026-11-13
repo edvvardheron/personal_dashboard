@@ -6,5 +6,6 @@ class Settings(BaseSettings):
     api_key: str
     github_username: str
     github_token: str
+    wakatime_api_key: str
 
 settings = Settings()

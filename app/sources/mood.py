@@ -28,4 +28,4 @@ def update_mood(mood: Mood, db: Session = Depends(get_db)):
             unit='score',
             external_id=external_id
         ))
-    db.commit()
+    db.commit() 

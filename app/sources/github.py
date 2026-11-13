@@ -43,7 +43,6 @@ def fetch_contributions(days: int = 30) -> list[dict]:
     days_out = []
     for week in data['weeks']:
         days_out.extend(week['contributionDays'])
-    body = response.json()
     return days_out
 
 def sync_github_activity(db: Session) -> None:
