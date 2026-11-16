@@ -19,8 +19,7 @@ def fetch_coding_time() -> float:
     if 'errors' in data:
         raise Exception(f'WakaTime API error: {data["errors"]}')
 
-    return data['data']['grand_total']['minutes'] 
-
+    return data['data']['grand_total']['total_seconds'] / 60.0  # Convert seconds to minutes
 def sync_wakatime_activity(db: Session) -> None:
     today = date.today()
     external_id = today.isoformat()
