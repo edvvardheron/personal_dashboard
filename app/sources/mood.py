@@ -29,3 +29,5 @@ def update_mood(mood: Mood, db: Session = Depends(get_db)):
             external_id=external_id
         ))
     db.commit() 
+
+    #curl.exe -X PUT http://localhost:8000/mood -H "Authorization: Bearer api_key_123456" -H "Content-Type: application/json" -d '{\"score\": 5}'
