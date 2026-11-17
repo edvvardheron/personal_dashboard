@@ -22,9 +22,9 @@ def get_metric_series(db: Session, source: str, metric: str, days: int = 30) -> 
         (
             Observation.source == source,
             Observation.metric == metric,
-            Observation.timestamp >= cutoff
+            Observation.local_date >= cutoff
         )
         .order_by(Observation.local_date)
     ).all()
 
-    return [(row.local_date, row.value) for row in rows if row.value is not None]
+    return [(row.local_date, row.value_num) for row in rows if row.value is not None]
