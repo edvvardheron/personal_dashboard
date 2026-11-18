@@ -27,4 +27,4 @@ def get_metric_series(db: Session, source: str, metric: str, days: int = 30) -> 
         .order_by(Observation.local_date)
     ).all()
 
-    return [(row.local_date, row.value_num) for row in rows if row.value is not None]
+    return [(row.local_date, row.value_num) for row in rows if row.value_num is not None]
