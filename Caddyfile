@@ -1,0 +1,7 @@
+api.edheron.online {
+    reverse_proxy localhost:8000
+}
+
+grafana.edheron.online {
+    reverse_proxy localhost:3000
+}

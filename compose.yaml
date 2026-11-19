@@ -6,10 +6,11 @@ services:
     environment:
       PORT: 8000
     ports:
-    - '8000:8000'
+    - '127.0.0.1:8000:8000'
     depends_on:
       db:
         condition: service_healthy
+    restart: unless-stopped
 
   db:
     image: postgres:16
@@ -25,12 +26,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
   grafana:
     image: grafana/grafana:latest
     container_name: grafana-dashboard
     ports:
-    - '3000:3000'
+    - '127.0.0.1:3000:3000'
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -42,6 +44,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    restart: unless-stopped
 volumes:
   postgres_data:
   grafana_data:
+
