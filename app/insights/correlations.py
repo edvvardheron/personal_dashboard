@@ -5,7 +5,7 @@ from app.models.observation import Observation
 from app.insights.helpers import get_metric_series
 import math
 
-def compute_correlation(db, source_a, metric_a, source_b, metric_b, days=30):
+def compute_correlation(db, source_a, metric_a, source_b, metric_b, days=30) -> dict:
     series_a = dict(get_metric_series(db, source_a, metric_a, days))
     series_b = dict(get_metric_series(db, source_b, metric_b, days))
     common_dates = sorted(set(series_a) & set(series_b))
