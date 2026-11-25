@@ -15,6 +15,7 @@ from app.sources.github import sync_github_activity
 from app.sources.wakatime import sync_wakatime_activity
 from app.sources.spotify import sync_spotify_activity
 from app.insights.correlations import sync_correlations
+from app.insights.anomaly import sync_anomalies
 
 '''
 GET = for retrieving data from the server. It is used to request data from a specified resource.
@@ -39,6 +40,10 @@ def run_correlations_sync():
     with SessionLocal() as db:
         sync_correlations(db)
 
+def run_anomalies_sync():
+    with SessionLocal() as db:
+        sync_anomalies(db)
+
 scheduler = BackgroundScheduler()
 
 @asynccontextmanager
@@ -47,6 +52,9 @@ async def lifespan(app: FastAPI):
     run_wakatime_sync() # Run the sync immediately on startup
     run_spotify_sync() # Run the sync immediately on startup
     run_correlations_sync()
+    run_anomalies_sync()
+
+    scheduler.add_job(run_anomalies_sync, 'interval', hours=24)
     scheduler.add_job(run_correlations_sync, 'interval', hours=12)
     scheduler.add_job(run_spotify_sync, 'interval', hours=0.5)  # schedule to run every 30 minutes
     scheduler.add_job(run_wakatime_sync, 'interval', hours=0.5)  # schedule to run every 30 minutes

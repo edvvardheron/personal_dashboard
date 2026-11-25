@@ -6,4 +6,4 @@ __pycache__/
 .git/
 tests/
 practice/
-.vscode/
+.vscode/dashboard-env/
